@@ -6,27 +6,21 @@ pygame.init()
 
 
 class DrawInfo:
-    BLACK = (0, 0, 0)
+    BLACK = (23, 23, 23)
     WHITE = (255, 255, 255)
-    GREEN = (0, 255, 0)
-    RED = (255, 0, 0)
+    GREEN = (0, 202, 78)
+    RED = (255, 96, 92)
     GREY = (192, 192, 192)
-    LIGHT_GREY = (160, 160, 160)
+    LIGHT_GREY = (255, 250, 250)
     DARK_GREY = (123, 123, 123)
-    BACKGROUND_COLOUR = WHITE
-    TITLE_GREY = (123, 123, 123)
-
-    GRADIENTS = [
-        (150, 150, 150),
-        (120, 120, 120),
-        (180, 180, 180)
-    ]
+    BACKGROUND_COLOUR = LIGHT_GREY
+    TITLE_COLOUR = BLACK
 
     FONT = pygame.font.SysFont('Arial', 20)
-    LARGE_FONT = pygame.font.SysFont('Arial', 30)
+    LARGE_FONT = pygame.font.SysFont('Arial', 36)
 
     SIDE_PAD = 100
-    TOP_PAD = 150
+    TOP_PAD = 130
 
     def __init__(self, width, height, lst):
         self.width = width
@@ -41,7 +35,8 @@ class DrawInfo:
         self.max_val = max(lst)
         self.min_val = min(lst)
 
-        self.block_width = round((self.width - self.SIDE_PAD) / len(lst))
+        self.block_space = round((self.width - self.SIDE_PAD) / len(lst))
+        self.block_width = round((self.width - self.SIDE_PAD) / len(lst)) * 0.9
         self.block_height = math.floor(
             (self.height - self.TOP_PAD) / (self.max_val - self.min_val))
         self.start_x = self.SIDE_PAD // 2
@@ -53,7 +48,7 @@ def draw(draw_info, algo_name, ascending):
     title = draw_info.LARGE_FONT.render(
         f"{algo_name} - {'Ascending' if ascending else 'Descending'}",
         1,
-        draw_info.TITLE_GREY
+        draw_info.TITLE_COLOUR
     )
     draw_info.window.blit(
         title, (draw_info.width / 2 - title.get_width() / 2, 5))
@@ -64,12 +59,12 @@ def draw(draw_info, algo_name, ascending):
         draw_info.BLACK
     )
     draw_info.window.blit(
-        controls, (draw_info.width / 2 - controls.get_width() / 2, 45))
+        controls, (draw_info.width / 2 - controls.get_width() / 2, 50))
 
     sorting = draw_info.FONT.render(
         "I - Insertion | B - Bubble", 1, draw_info.BLACK)
     draw_info.window.blit(
-        sorting, (draw_info.width / 2 - sorting.get_width() / 2, 75))
+        sorting, (draw_info.width / 2 - sorting.get_width() / 2, 80))
 
     draw_list(draw_info)
     pygame.display.update()
@@ -87,11 +82,11 @@ def draw_list(draw_info, colour_positions={}, clear_bg=False):
                          draw_info.BACKGROUND_COLOUR, clear_rect)
 
     for i, val in enumerate(lst):
-        x = draw_info.start_x + i * draw_info.block_width
+        x = draw_info.start_x + i * draw_info.block_space
         y = draw_info.height - (val - draw_info.min_val) *  \
             draw_info.block_height
 
-        colour = draw_info.GRADIENTS[i % 3]
+        colour = draw_info.DARK_GREY
 
         if i in colour_positions:
             colour = colour_positions[i]
@@ -158,8 +153,8 @@ def main():
     run = True
     clock = pygame.time.Clock()
 
-    n = 50
-    min_val = 0
+    n = 100
+    min_val = 5
     max_val = 100
 
     lst = generate_list(n, min_val, max_val)
@@ -172,7 +167,7 @@ def main():
     sorting_algo_generator = None
 
     while run:
-        clock.tick(120)
+        clock.tick(500)
 
         if sorting:
             try:
