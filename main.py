@@ -156,25 +156,29 @@ def selection_sort(draw_info, ascending=True):
         for i in range(len(lst)):
             min_idx = i
             for j in range(i + 1, len(lst)):
+                draw_list(draw_info, {min_idx: draw_info.GREEN,
+                          j: draw_info.RED}, True)
                 if lst[min_idx] > lst[j]:
+                    draw_list(draw_info, {min_idx: draw_info.GREEN,
+                              j: draw_info.RED}, True)
                     min_idx = j
 
             lst[i], lst[min_idx] = lst[min_idx], lst[i]
 
-            draw_list(draw_info, {i: draw_info.GREEN,
-                      min_idx: draw_info.RED}, True)
             yield True
     else:
         for i in range(len(lst)):
             max_idx = i
             for j in range(i + 1, len(lst)):
+                draw_list(draw_info, {max_idx: draw_info.GREEN,
+                          j: draw_info.RED}, True)
                 if lst[max_idx] < lst[j]:
+                    draw_list(draw_info, {max_idx: draw_info.GREEN,
+                              j: draw_info.RED}, True)
                     max_idx = j
 
             lst[i], lst[max_idx] = lst[max_idx], lst[i]
 
-            draw_list(draw_info, {i: draw_info.GREEN,
-                      max_idx: draw_info.RED}, True)
             yield True
 
     return lst
@@ -198,7 +202,7 @@ def main():
     sorting_algo_generator = None
 
     while run:
-        clock.tick(400)
+        clock.tick(800)
 
         if sorting:
             try:
