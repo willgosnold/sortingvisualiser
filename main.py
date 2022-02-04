@@ -62,7 +62,7 @@ def draw(draw_info, algo_name, ascending):
         controls, (draw_info.width / 2 - controls.get_width() / 2, 50))
 
     sorting = draw_info.FONT.render(
-        "I - Insertion | B - Bubble", 1, draw_info.BLACK)
+        "I - Insertion | B - Bubble | S - Selection", 1, draw_info.BLACK)
     draw_info.window.blit(
         sorting, (draw_info.width / 2 - sorting.get_width() / 2, 80))
 
@@ -149,6 +149,37 @@ def insertion_sort(draw_info, ascending=True):
     return lst
 
 
+def selection_sort(draw_info, ascending=True):
+    lst = draw_info.lst
+
+    if ascending:
+        for i in range(len(lst)):
+            min_idx = i
+            for j in range(i + 1, len(lst)):
+                if lst[min_idx] > lst[j]:
+                    min_idx = j
+
+            lst[i], lst[min_idx] = lst[min_idx], lst[i]
+
+            draw_list(draw_info, {i: draw_info.GREEN,
+                      min_idx: draw_info.RED}, True)
+            yield True
+    else:
+        for i in range(len(lst)):
+            max_idx = i
+            for j in range(i + 1, len(lst)):
+                if lst[max_idx] < lst[j]:
+                    max_idx = j
+
+            lst[i], lst[max_idx] = lst[max_idx], lst[i]
+
+            draw_list(draw_info, {i: draw_info.GREEN,
+                      max_idx: draw_info.RED}, True)
+            yield True
+
+    return lst
+
+
 def main():
     run = True
     clock = pygame.time.Clock()
@@ -167,7 +198,7 @@ def main():
     sorting_algo_generator = None
 
     while run:
-        clock.tick(500)
+        clock.tick(400)
 
         if sorting:
             try:
@@ -202,6 +233,9 @@ def main():
             elif event.key == pygame.K_b and not sorting:
                 sorting_algorithm = bubble_sort
                 sorting_algo_name = "Bubble Sort"
+            elif event.key == pygame.K_s and not sorting:
+                sorting_algorithm = selection_sort
+                sorting_algo_name = "Selection Sort"
 
     pygame.quit()
 
